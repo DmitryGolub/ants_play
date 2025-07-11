@@ -14,7 +14,7 @@
 # with requests.Session() as session:
 #     # headers = {
 #     #     'accept': 'application/json',
-#     #     'X-Auth-Token': ''
+#     #     'X-Auth-Token': 'e71c6ce6-f297-40fb-9a44-16b650933bec'
 #     # }
 #
 #     # register = session.post(
