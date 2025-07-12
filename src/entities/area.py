@@ -44,7 +44,7 @@ class Area:
         """Получить точку по координатам"""
         return self.coord_to_point.get((q, r))
 
-    def getVegetables(self) -> list[Point]:
+    def getFood(self) -> list[Point]:
         """Получить все точки с едой"""
         return [p for p in self.points if p.food is not None]
 
