@@ -13,7 +13,7 @@ class Food:
 class Ant:
     q: int
     r: int
-    type: int
+    type: int # разведчик - 2, боец - 1, рабочий - 0.
     health: int
     id: str
     food: Food | None = None

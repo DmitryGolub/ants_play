@@ -29,28 +29,46 @@ class Strategy:
 
     def _generate_random_actions(self):
         result = []
+        nonono = []
         for ant in self.army.all_ants:
-            if ant.food.amount >= 5:
+            if ant.food.amount >= 1:
                 print('create path')
-                path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(), self.area.coord_to_point)
-                result.append({
-                    "ant": ant.id,
-                    "path": [{"q": step[0], "r": step[1]} for step in path]
-                })
-            else:
-                print('go random')
+                mx = 0
+                if ant.type == 2:
+                    mx = 7
+                if ant.type == 1:
+                    mx = 4
+                if ant.type == 0:
+                    mx = 5
+                #for i in range(6):
+                #    path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(), self.area.coord_to_point, mx)
+            elif ant.type == 2:
                 start_point = self.area.coord_to_point.get((ant.q, ant.r))
                 if not start_point:
                     continue
+                path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 7)
 
-                path = AntMover.createRandomPath(start_point, self.area.coord_to_point)
+            elif ant.type == 1:
+                start_point = self.area.coord_to_point.get((ant.q, ant.r))
+                if not start_point:
+                    continue
+                path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
+
+            elif ant.type == 0:
+                print('go random')
+                start_point = self.area.coord_to_point.get((ant.q, ant.r))
+                food = self.area.get_nearest_food(ant)
+                if not start_point:
+                    continue
+                path = AntMover.createPath(start_point, food, self.area.coord_to_point, 5)
                 if not path:
                     continue
-
-                result.append({
-                    "ant": ant.id,
-                    "path": [{"q": step[0], "r": step[1]} for step in path]
-                })
+            if path:
+                nonono.append(path[-1])
+            result.append({
+                "ant": ant.id,
+                "path": [{"q": step[0], "r": step[1]} for step in path]
+            })
         return result
 
     def _generate_food_actions(self):

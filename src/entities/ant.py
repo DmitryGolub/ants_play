@@ -109,7 +109,7 @@ class AntMover:
                     key=lambda n: -((n[0] - avoid_point.q) ** 2 + (n[1] - avoid_point.r) ** 2)
                 )
 
-            next_step = random.choice(neighbors[:2]) if len(neighbors) > 1 else neighbors[0]
+            next_step = random.choice(neighbors[:4]) if len(neighbors) > 1 else neighbors[0]
             path.append(next_step)
             current = next_step
 

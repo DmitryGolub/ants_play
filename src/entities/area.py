@@ -144,3 +144,13 @@ class Area:
                     enemies.append(p.enemy)
         return enemies
     # remember last points, unavailable now.
+    def get_nearest_food(self, ant: Ant) -> Point | None:
+        min_dist = float('inf')
+        nearest_food = None
+        for p in self.points:
+            if p.food:
+                dist = self.hex_distance(ant.q, ant.r, p.q, p.r)
+                if dist < min_dist:
+                    min_dist = dist
+                    nearest_food = p
+        return nearest_food
