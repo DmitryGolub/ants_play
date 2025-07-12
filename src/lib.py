@@ -7,7 +7,11 @@ from src.env import HEADERS, BASEURL, FILENAME
 def sender(path: str, payload: Optional[dict] = None) -> Optional[requests.Response]:
     url = f"{BASEURL}{path}"
     response = requests.post(url=url, headers=HEADERS, json=payload)
-    return response if response.status_code == 200 else None
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(response.json())
+        return None
 
 
 def write_json(data: Any) -> None:
