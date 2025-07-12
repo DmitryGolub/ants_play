@@ -102,4 +102,3 @@ class Area:
         pass
 
     # remember last points, unavailable now.
-
