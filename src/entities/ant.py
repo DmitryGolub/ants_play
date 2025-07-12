@@ -8,16 +8,34 @@ from src.entities.area import Point
 
 class AntMover:
     @staticmethod
-    def get_neighbors(hex_q: int, hex_r: int) -> List[Tuple[int, int]]:
-        """Возвращает координаты 6 соседних гексов"""
-        return [
-            (hex_q + 1, hex_r),  # Вправо
-            (hex_q - 1, hex_r),  # Влево
-            (hex_q, hex_r + 1),  # Вверх-вправо
-            (hex_q, hex_r - 1),  # Вниз-влево
-            (hex_q + 1, hex_r - 1),  # Вниз-вправо
-            (hex_q - 1, hex_r + 1)  # Вверх-влево
-        ]
+    def get_neighbors(q: int, r: int) -> list[tuple[int, int]]:
+        """
+        Возвращает координаты 6 соседей в offset-системе координат (odd-r),
+        где строки (r) с нечётными индексами смещены по q.
+        """
+        if r % 2 == 0:  # чётная строка
+            directions = [
+                (+1, 0), (-1, 0),
+                (0, -1), (0, +1),
+                (-1, -1), (-1, +1)
+            ]
+        else:  # нечётная строка
+            directions = [
+                (+1, 0), (-1, 0),
+                (0, -1), (0, +1),
+                (+1, -1), (+1, +1)
+            ]
+        return [(q + dq, r + dr) for dq, dr in directions]
+    # def get_neighbors(hex_q: int, hex_r: int) -> List[Tuple[int, int]]:
+    #     """Возвращает координаты 6 соседних гексов"""
+    #     return [
+    #         (hex_q + 1, hex_r),  # Вправо
+    #         (hex_q - 1, hex_r),  # Влево
+    #         (hex_q, hex_r + 1),  # Вверх-вправо
+    #         (hex_q, hex_r - 1),  # Вниз-влево
+    #         (hex_q + 1, hex_r - 1),  # Вниз-вправо
+    #         (hex_q - 1, hex_r + 1)  # Вверх-влево
+    #     ]
 
     @staticmethod
     def heuristic(a: Tuple[int, int], b: Tuple[int, int]) -> float:

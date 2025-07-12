@@ -13,13 +13,9 @@ class Strategy:
 
     def generate_actions(self):
         print('generationg actions:')
-        a = self._generate_def_actions()
-        b = self._generate_food_actions()
-        c = self._generate_attack_actions()
-        d = self._generate_idle_actions()
         e = self._generate_random_actions()
         res = {}
-        res['moves'] = a + b + c + d + e
+        res['moves'] = e
         return res
 
     def _generate_def_actions(self):
@@ -27,48 +23,113 @@ class Strategy:
             return self.def_orechnik()
         return []
 
+    # def _generate_random_actions(self):
+    #     result = []
+    #     no0 = []
+    #     no1 = []
+    #     no2 = []
+    #     for ant in self.army.all_ants:
+    #         if ant.food.amount >= 1:
+    #             print('create path')
+    #             mx = 0
+    #             if ant.type == 2:
+    #                 mx = 7
+    #             if ant.type == 1:
+    #                 mx = 4
+    #             if ant.type == 0:
+    #                 mx = 5
+    #             path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(),
+    #                                            self.area.coord_to_point, mx)
+    #
+    #         elif ant.type == 2:
+    #             start_point = self.area.coord_to_point.get((ant.q, ant.r))
+    #             if not start_point:
+    #                 continue
+    #             for i in range(30):
+    #                 path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 7)
+    #                 if path and path[-1] not in no2:
+    #                     no2.append(path[-1])
+    #                     break
+    #                 path = None
+    #
+    #         elif ant.type == 1:
+    #             start_point = self.area.coord_to_point.get((ant.q, ant.r))
+    #             if not start_point:
+    #                 continue
+    #             for i in range(30):
+    #                 path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
+    #                 if path and path[-1] not in no1:
+    #                     no1.append(path[-1])
+    #                     break
+    #                 path = None
+    #
+    #         elif ant.type == 0:
+    #             print('go random')
+    #             start_point = self.area.coord_to_point.get((ant.q, ant.r))
+    #             if not start_point:
+    #                 continue
+    #             for i in range(30):
+    #                 path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 5)
+    #                 if path and path[-1] not in no0:
+    #                     no0.append(path[-1])
+    #                     break
+    #                 path = None
+    #         result.append({
+    #             "ant": ant.id,
+    #             "path": [{"q": step[0], "r": step[1]} for step in path]
+    #         })
+    #     return result
+
     def _generate_random_actions(self):
         result = []
-        no0 = []
-        no1 = []
-        no2 = []
+        # Для каждого типа будем отслеживать куда уже кто-то пошёл или стоит
+        occupied_targets = {0: set(), 1: set(), 2: set()}
+
         for ant in self.army.all_ants:
+            ant_type = ant.type
             start_point = self.area.coord_to_point.get((ant.q, ant.r))
-            if ant.food and ant.food.amount > 0:
-                path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(),
-                                               self.area.coord_to_point, 4)
+            if not start_point:
+                continue
 
-            elif ant.type == 2:
-                for i in range(6):
-                    path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 7)
-                    if path and path[-1] not in no2:
-                        no2.append(path[-1])
-                        break
-                    path = None
+            # Если муравей несёт еду, он возвращается на базу
+            if ant.food.amount > 0:
+                print('create path')
+                max_len = {0: 5, 1: 4, 2: 7}[ant_type]
+                path = AntMover.createPath(
+                    start_point,
+                    self.area.getSpot(),
+                    self.area.coord_to_point,
+                    max_len
+                )
+                if path:
+                    target_coord = path[-1]
+                    if target_coord not in occupied_targets[ant_type]:
+                        occupied_targets[ant_type].add(target_coord)
+                    else:
+                        path = None
+            else:
+                # Пытаемся найти путь, который не приводит к занятой клетке
+                max_len = {0: 5, 1: 4, 2: 7}[ant_type]
+                path = None
+                for _ in range(30):
+                    temp_path = AntMover.createRandomPath(start_point, self.area.coord_to_point, max_len)
+                    if temp_path:
+                        target_coord = temp_path[-1]
+                        # (.friend is not None) and self.area.getPoint(temp_path[-1][0], temp_path[-1][1]).friend.type != ant.type
+                        if (target_coord not in occupied_targets[ant_type]):
+                            tmp = self.area.getPoint(temp_path[-1][0], temp_path[-1][1])
+                            if tmp and tmp.friend and tmp.friend.type != ant.type:
+                                path = temp_path
+                                occupied_targets[ant_type].add(target_coord)
+                                break
 
-            elif ant.type == 1:
-                for i in range(6):
-                    path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
-                    if path and path[-1] not in no1:
-                        no1.append(path[-1])
-                        break
-                    path = None
+            if path:
+                result.append({
+                    "ant": ant.id,
+                    "path": [{"q": step[0], "r": step[1]} for step in path]
+                })
 
-            elif ant.type == 0:
-                print('go random')
-                start_point = self.area.coord_to_point.get((ant.q, ant.r))
-                food = self.area.get_nearest_food(ant)
-
-                if food:
-                    path = AntMover.createPath(start_point, food, self.area.coord_to_point, 4)
-                else:
-                    path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
-
-            print(f"НЕ СОСТАВИЛСЯ ПУТЬСЯ ДЛЯ {ant.type}")
-            result.append({
-                "ant": ant.id,
-                "path": [{"q": step[0], "r": step[1]} for step in path]
-            })
+>>>>>>> feat/last
         return result
 
     def _generate_food_actions(self):
