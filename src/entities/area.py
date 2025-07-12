@@ -27,6 +27,12 @@ class Area:
                 return p
         return None
 
+    def getHome(self) -> list[Point]:
+        """
+        Возвращает список всех точек, которые являются частью дома (home).
+        """
+        return [p for p in self.points if p.is_home]
+
     def updatePoint(self, point: Point, **kwargs):
         for key, value in kwargs.items():
             if hasattr(point, key):
@@ -95,11 +101,40 @@ class Area:
                 self.coord_to_point[coord].enemy = ant_obj
 
         write_json(response)
-    def findNearestAnt(self): # to point
-        pass
 
-    def scanBase(self) -> bool: # 10 point
-        pass
+    def get_nearest_ant(self, point: Point) -> Ant:
+        """
+        Найти ближайшего своего муравья к данной точке (Point).
+        Возвращает Ant или None, если муравьёв нет.
+        """
+        min_dist = float('inf')
+        nearest_ant = None
+        for p in self.points:
+            if p.friend:
+                dist = self.hex_distance(point.q, point.r, p.q, p.r)
+                if dist < min_dist:
+                    min_dist = dist
+                    nearest_ant = p.friend
+        return nearest_ant
 
-    # remember last points, unavailable now.
+    @staticmethod
+    def hex_distance(q1, r1, q2, r2):
+        # Кубическая метрика для гекс-сетки (axial coords)
+        return max(abs(q1 - q2), abs(r1 - r2), abs((-q1 - r1) - (-q2 - r2)))
 
+    def detect_near_enemies(self, radius: int = 10) -> list[Ant]:
+        """
+        Возвращает список врагов в радиусе radius от базы (spot).
+        """
+        center = self.getSpot()
+        if center is None:
+            print("База (spot) не найдена!")
+            return []
+
+        enemies = []
+        for p in self.points:
+            if p.enemy:
+                dist = self.hex_distance(center.q, center.r, p.q, p.r)
+                if dist <= radius:
+                    enemies.append(p.enemy)
+        return enemies
