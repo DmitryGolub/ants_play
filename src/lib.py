@@ -1,7 +1,7 @@
 import json
 import requests
 from typing import Any, Optional
-from env import *
+from src.env import HEADERS, BASEURL, FILENAME
 
 
 def sender(path: str, payload: Optional[dict] = None) -> Optional[requests.Response]:
@@ -16,5 +16,6 @@ def write_json(data: Any) -> None:
 
 
 def getter(path: str) -> Optional[dict]:
-    response = requests.get(url=path, headers=HEADERS)
+    url = f"{BASEURL}{path}"
+    response = requests.get(url=url, headers=HEADERS)
     return response.json() if response.status_code == 200 else None

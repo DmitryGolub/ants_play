@@ -9,29 +9,29 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import time
 
-
-def data_to_json(data, file: str) -> None:
-    with open(file, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=4, ensure_ascii=False)
-
-
-with requests.Session() as session:
-    headers = {
-        'accept': 'application/json',
-        'X-Auth-Token': 'e71c6ce6-f297-40fb-9a44-16b650933bec'
-    }
-
-    register = session.post(
-        url="https://games-test.datsteam.dev/api/register",
-        headers=headers
-    )
-
-    if register.status_code == 200:
-        print("Success authenticate")
-    else:
-        print("Unsuccess authenticate")
-        print(register)
-        raise TimeoutError("Register was finished, wait new game")
+#
+# def data_to_json(data, file: str) -> None:
+#     with open(file, "w", encoding="utf-8") as file:
+#         json.dump(data, file, indent=4, ensure_ascii=False)
+#
+#
+# with requests.Session() as session:
+#     headers = {
+#         'accept': 'application/json',
+#         'X-Auth-Token': 'e71c6ce6-f297-40fb-9a44-16b650933bec'
+#     }
+#
+#     register = session.post(
+#         url="https://games-test.datsteam.dev/api/register",
+#         headers=headers
+#     )
+#
+#     if register.status_code == 200:
+#         print("Success authenticate")
+#     else:
+#         print("Unsuccess authenticate")
+#         print(register)
+#         raise TimeoutError("Register was finished, wait new game")
 
     # data_to_json(register.json(), "register.json")
     #
@@ -69,8 +69,8 @@ with requests.Session() as session:
     # ).json()
 
 
-
-    print("Finish pars")
+    #
+    # print("Finish pars")
 
 
 
@@ -94,12 +94,12 @@ class ArenaCanvas(FigureCanvas):
         self.ax.axis('off')
 
         tile_colors = {
-            1: "#b5e7a0",   # grass
-            2: "#ffdac1",   # sand
-            3: "#e0bbf3",   # stone
-            4: "#fdffb6"    # water
+            1: "#b5e7a0",   # grass зеленый
+            2: "#ffdac1",   # sand оранжевый
+            3: "#e0bbf3",   # stone фиолетовый
+            4: "#fdffb6"    # water желтый
         }
-        default_color = "#eeeeee"
+        default_color = "#eeeeee" # серый
 
         for tile in arena["map"]:
             q, r, ttype = tile["q"], tile["r"], tile["type"]
