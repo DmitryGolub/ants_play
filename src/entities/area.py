@@ -1,7 +1,7 @@
 from typing import Optional
 
 from dataclasses import dataclass
-from src.lib import getter, sender
+from src.lib import write_json
 
 
 @dataclass
@@ -125,3 +125,5 @@ class Area:
             )
             if coord in self.coord_to_point:
                 self.coord_to_point[coord].enemy = ant_obj
+
+        write_json(response)
