@@ -1,6 +1,7 @@
 from src.entities.area import Area
 from src.entities.ant import AntMover
 from src.entities.army import Army
+from src.entities.entities import Point
 
 
 class Strategy:
@@ -14,8 +15,9 @@ class Strategy:
         b = self._generate_food_actions()
         c = self._generate_attack_actions()
         d = self._generate_idle_actions()
+        e = self._generate_random_actions()
         res = {}
-        res['moves'] = a + b + c + d
+        res['moves'] = a + b + c + d + e
         return res
 
     def _generate_def_actions(self):
@@ -23,6 +25,29 @@ class Strategy:
             return self.def_orechnik()
         return []
 
+    def _generate_random_actions(self):
+        result = []
+        for ant in self.army.all_ants:
+            if ant.food:
+                path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(), self.area.coord_to_point)
+                result.append({
+                    "ant": ant.id,
+                    "path": [{"q": step[0], "r": step[1]} for step in path]
+                })
+            else:
+                start_point = self.area.coord_to_point.get((ant.q, ant.r))
+                if not start_point:
+                    continue
+
+                path = AntMover.createRandomPath(start_point, self.area.coord_to_point)
+                if not path:
+                    continue
+
+                result.append({
+                    "ant": ant.id,
+                    "path": [{"q": step[0], "r": step[1]} for step in path]
+                })
+        return result
 
     def _generate_food_actions(self):
         result = []

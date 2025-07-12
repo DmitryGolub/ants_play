@@ -4,6 +4,7 @@ class Army:
     busy_ants = []
     idle_ants = []
     all_ants = []
+    busy_targets = []
     def __init__(self):
         pass
 
@@ -11,6 +12,7 @@ class Army:
         self.all_ants = self.parse_ants(ants)
         self.idle_ants = self.all_ants.copy()
         self.busy_ants = []
+        self.busy_targets = []
 
     def _find_ant_by_id(self, ant_id: str) -> Ant | None:
         for ant in self.all_ants:
@@ -47,5 +49,5 @@ class Army:
             self.idle_ants.remove(ant)
         self.busy_ants.append(ant)
 
-    def remove_busyy_ant(self):
+    def remove_busy_ant(self):
         pass
