@@ -52,6 +52,7 @@ def play_round():
         if actions:
             print(actions)
             result = sender("move", actions)
+            print('result', result)
         else:
             print("Код писал даун")
 

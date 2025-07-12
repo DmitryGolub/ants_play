@@ -81,4 +81,4 @@ class AntMover:
 
         path.append(start)
         path.reverse()
-        return path
+        return path[1:] if len(path) > 1 else []

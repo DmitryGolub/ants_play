@@ -33,8 +33,7 @@ class Strategy:
                 continue
 
             # Ищем ближайшего незанятого муравья
-            ant = self.area.get_nearest_ant(self.area.getPoint(food.q, food.r),
-                                            exclude_ids={a.id for a in self.army.busy_ants})
+            ant = self.area.get_nearest_ant(self.area.getPoint(food.q, food.r), self.army)
             if not ant:
                 continue
 
