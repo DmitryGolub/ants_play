@@ -1,4 +1,3 @@
-from fontTools.varLib.builder import buildVarRegionAxis
 from plotly.graph_objs.indicator import Number
 
 from src.entities.area import Area

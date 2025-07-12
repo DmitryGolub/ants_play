@@ -20,10 +20,10 @@ class Area:
         """Получить все точки с врагами"""
         return [p for p in self.points if p.enemy is not None]
 
-    def getSpot(self) -> Optional[Point]:
+    def getSpot(self) -> Point | None:
         """Получить спот"""
         for p in self.points:
-            if p.is_spot:
+            if p.is_home:
                 return p
         return None
 
