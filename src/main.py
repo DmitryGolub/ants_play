@@ -34,7 +34,9 @@ def play_round():
     while True:
         data = getter("arena")
 
-        current_turn = data.get("turnNo")
+        current_turn = data.get("turnNo", False)
+        if not current_turn:
+            break
         if current_turn == last_turn:
             time.sleep(1)
             continue
