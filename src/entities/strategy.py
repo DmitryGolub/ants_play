@@ -1,3 +1,4 @@
+from fontTools.varLib.builder import buildVarRegionAxis
 from plotly.graph_objs.indicator import Number
 
 from src.entities.area import Area
@@ -29,7 +30,9 @@ class Strategy:
 
     def _generate_random_actions(self):
         result = []
-        nonono = []
+        no0 = []
+        no1 = []
+        no2 = []
         for ant in self.army.all_ants:
             if ant.food.amount >= 1:
                 print('create path')
@@ -40,19 +43,30 @@ class Strategy:
                     mx = 4
                 if ant.type == 0:
                     mx = 5
-                #for i in range(6):
-                #    path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(), self.area.coord_to_point, mx)
+                path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(),
+                                               self.area.coord_to_point, mx)
+
             elif ant.type == 2:
                 start_point = self.area.coord_to_point.get((ant.q, ant.r))
                 if not start_point:
                     continue
-                path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 7)
+                for i in range(6):
+                    path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 7)
+                    if path and path[-1] not in no2:
+                        no2.append(path[-1])
+                        break
+                    path = None
 
             elif ant.type == 1:
                 start_point = self.area.coord_to_point.get((ant.q, ant.r))
                 if not start_point:
                     continue
-                path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
+                for i in range(6):
+                    path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
+                    if path and path[-1] not in no1:
+                        no1.append(path[-1])
+                        break
+                    path = None
 
             elif ant.type == 0:
                 print('go random')
@@ -60,11 +74,12 @@ class Strategy:
                 food = self.area.get_nearest_food(ant)
                 if not start_point:
                     continue
-                path = AntMover.createPath(start_point, food, self.area.coord_to_point, 5)
-                if not path:
-                    continue
-            if path:
-                nonono.append(path[-1])
+                for i in range(6):
+                    path = AntMover.createRandomPath(start_point, self.area.coord_to_point, 4)
+                    if path and path[-1] not in no0:
+                        no0.append(path[-1])
+                        break
+                    path = None
             result.append({
                 "ant": ant.id,
                 "path": [{"q": step[0], "r": step[1]} for step in path]
