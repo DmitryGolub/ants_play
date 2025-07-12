@@ -1,2 +1,3 @@
 .idea
-.vevn
+.venv
+__pycache__
