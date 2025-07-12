@@ -1,7 +1,6 @@
 from typing import Optional
 from src.entities.entities import Point, Food, Ant
 from src.lib import write_json
-from src.entities.army import Army
 
 
 class Area:
@@ -103,7 +102,7 @@ class Area:
 
         write_json(response)
 
-    def get_nearest_ant(self, point: Point, army: Army) -> Ant | None:
+    def get_nearest_ant(self, point: Point, army) -> Ant | None:
         """
         Найти ближайшего своего НЕЗАНЯТОГО муравья к данной точке (Point).
         Возвращает Ant или None, если свободных муравьёв нет.
