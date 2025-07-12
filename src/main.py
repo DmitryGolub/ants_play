@@ -50,7 +50,8 @@ def play_round():
         actions = strategy.generate_actions()
 
         if actions:
-            result = sender("actions", actions)
+            print(actions)
+            result = sender("move", actions)
         else:
             print("Код писал даун")
 

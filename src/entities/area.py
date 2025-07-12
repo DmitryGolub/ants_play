@@ -102,6 +102,18 @@ class Area:
 
         write_json(response)
 
+    # Примерно так должен выглядеть метод area.get_nearest_ant
+    def get_nearest_ant(self, point: Point, exclude_ids: set[str] = None) -> Ant | None:
+        if exclude_ids is None:
+            exclude_ids = set()
+
+        idle_ants = [ant for ant in self.army.all_ants if ant.id not in exclude_ids]
+        if not idle_ants:
+            return None
+
+        nearest = min(idle_ants, key=lambda ant: point.distance_to(self.getPoint(ant.q, ant.r)))
+        return nearest
+
     def get_nearest_ant(self, point: Point) -> Ant:
         """
         Найти ближайшего своего муравья к данной точке (Point).

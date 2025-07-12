@@ -1,6 +1,4 @@
-from charset_normalizer.cd import alphabet_languages
-
-from src.entities.area import Ant, Food
+from src.entities.area import Ant, Food, Point
 
 class Army:
     busy_ants = []
@@ -40,7 +38,6 @@ class Army:
             if ant.id == ant_id:
                 return ant
         return None
-
 
     @staticmethod
     def parse_ants(data: list[dict]) -> list[Ant]:
