@@ -1,22 +1,14 @@
-import requests
+from src.entities.army import Army
+from src.entities.area import Area
+from src.entities.strategy import Strategy
+from src.lib import sender, getter
 
+step = 0
 
-print("start")
-
-with requests.Session() as session:
-    headers = {
-        'accept': 'application/json',
-        'X-Auth-Token': 'e71c6ce6-f297-40fb-9a44-16b650933bec'
-    }
-
-    register = session.post(
-        url="https://games-test.datsteam.dev/api/register",
-        headers=headers
-    )
-
-    if register.status_code == 200:
-        print("Success authenticate")
-    else:
-        print("Unsuccess authenticate")
-        print(register)
-        raise TimeoutError("Register was finished, wait new game")
+while True:
+    ans = sender("register")
+    print(ans)
+    data = getter("arena")
+    area = Area()
+    area.updateArea(data)
+    area.print_map()

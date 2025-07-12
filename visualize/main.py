@@ -146,7 +146,7 @@ class ArenaUpdateThread(QThread):
     def run(self):
         while self.running:
             try:
-                with open("data/arena.json", encoding="utf-8") as f:
+                with open("../data/arena.json", encoding="utf-8") as f:
                     arena = json.load(f)
                 self.arena_data_signal.emit(arena)
             except Exception as e:

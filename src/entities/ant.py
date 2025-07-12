@@ -24,7 +24,7 @@ class AntMover:
         return (abs(a[0] - b[0]) + abs(a[0] + a[1] - b[0] - b[1]) + abs(a[1] - b[1])) / 2
 
     def createPath(self, start_point: Point, finish_point: Point, game_map: dict[Tuple[int, int], Point]) -> List[
-        Tuple[int, int]]:
+            Tuple[int, int]]:
         """
         Находит путь от start_point до finish_point на гексагональной сетке
 
