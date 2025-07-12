@@ -138,3 +138,4 @@ class Area:
                 if dist <= radius:
                     enemies.append(p.enemy)
         return enemies
+    # remember last points, unavailable now.

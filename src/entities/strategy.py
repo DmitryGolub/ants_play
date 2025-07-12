@@ -26,11 +26,9 @@ class Strategy:
 
     def _generate_food_actions(self):
         result = []
-        # for food in self.area.getFood():
-        #     ant_id = self.nearest_food_ant(food)
-        #     movie = self.send_ant(ant_id)
-        #     if movie:
-        #         result.append(movie)
+        print(self.area.getFood())
+        # for i in self.area.getFood():
+
         return result
 
     def _generate_attack_actions(self):
