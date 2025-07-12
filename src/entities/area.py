@@ -219,8 +219,8 @@ class Area:
                 print(f" - {tstr} @({f.q},{f.r}) x {f.amount}")
 
 
-sender("/register")
-data = getter("/arena")
+sender("register")
+data = getter("arena")
 area = Area()
 area.updateArea(data)
 area.print_map()
