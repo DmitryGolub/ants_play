@@ -71,7 +71,6 @@ class Strategy:
             elif ant.type == 0:
                 print('go random')
                 start_point = self.area.coord_to_point.get((ant.q, ant.r))
-                food = self.area.get_nearest_food(ant)
                 if not start_point:
                     continue
                 for i in range(6):
