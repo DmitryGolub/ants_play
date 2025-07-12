@@ -1,3 +1,6 @@
 class Army:
-    def init(self):
+    def __init__(self):
+        pass
+
+    def updateArmy(self, ants):
         pass

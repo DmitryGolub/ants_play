@@ -23,34 +23,21 @@ class AntMover:
         """Эвристическая функция для A* (гексагональное расстояние)"""
         return (abs(a[0] - b[0]) + abs(a[0] + a[1] - b[0] - b[1]) + abs(a[1] - b[1])) / 2
 
-    def createPath(self, start_point: Point, finish_point: Point, game_map: dict[Tuple[int, int], Point]) -> List[
+    @staticmethod
+    def createPath(start_point: Point, finish_point: Point, game_map: dict[Tuple[int, int], Point]) -> List[
             Tuple[int, int]]:
-        """
-        Находит путь от start_point до finish_point на гексагональной сетке
-
-        Args:
-            start_point: Начальная точка
-            finish_point: Конечная точка
-            game_map: Словарь всех точек на карте {(q, r): Point}
-
-        Returns:
-            Список координат пути [(q1, r1), (q2, r2), ...] или пустой список если путь не найден
-        """
         start = (start_point.q, start_point.r)
         goal = (finish_point.q, finish_point.r)
 
-        # Проверка тривиальных случаев
         if start == goal:
             return [start]
 
         if goal not in game_map:
             return []
 
-        # Очередь с приоритетом
         frontier = []
         heapq.heappush(frontier, (0, start))
 
-        # Для отслеживания пути
         came_from = {start: None}
         cost_so_far = {start: 0}
 
@@ -60,7 +47,7 @@ class AntMover:
             if current == goal:
                 break  # Путь найден
 
-            for neighbor in self.get_neighbors(*current):
+            for neighbor in AntMover.get_neighbors(*current):
                 # Проверяем доступность соседа
                 if neighbor not in game_map:
                     continue
@@ -79,7 +66,7 @@ class AntMover:
 
                 if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
                     cost_so_far[neighbor] = new_cost
-                    priority = new_cost + self.heuristic(goal, neighbor)
+                    priority = new_cost + AntMover.heuristic(goal, neighbor)
                     heapq.heappush(frontier, (priority, neighbor))
                     came_from[neighbor] = current
 

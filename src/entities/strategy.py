@@ -4,8 +4,13 @@ from src.entities.army import Army
 
 
 class Strategy:
-    def init(self, Area: Area, Mover: AntMover, Army: Army):
+    def __init__(self):
         pass
 
-    def setArea(self, newarea):
-        self.area = newarea
+    def update_state(self, army: Army, area: Area):
+        self.army = army
+        self.area = area
+
+    def generate_actions(self):
+        print('generationg actions:')
+        return []

@@ -27,6 +27,10 @@ def wait_for_round_start(lobbyEndsIn: int):
 
 def play_round():
     last_turn = -1
+    area = Area()
+    army = Army()
+    strategy = Strategy()
+
     while True:
         data = getter("arena")
 
@@ -38,18 +42,15 @@ def play_round():
         last_turn = current_turn
         print(f"Ход #{current_turn}")
 
-        area = Area()
         area.updateArea(data)
-        area.print_map()
-
-        strategy = Strategy(area)
+        army.updateArmy(data['ants'])
+        strategy.update_state(army, area)
         actions = strategy.generate_actions()
 
         if actions:
             result = sender("actions", actions)
-            print(f"Действия отправлены: {result}")
         else:
-            print("Нет действий на этот ход.")
+            print("Код писал даун")
 
         time.sleep(1)
 
