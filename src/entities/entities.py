@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class Food:
+    q: int
+    r: int
     type: int
     amount: int
 

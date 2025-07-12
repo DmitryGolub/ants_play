@@ -2,7 +2,6 @@ from src.entities.area import Ant, Food, Point
 
 class Army:
     busy_ants = []
-    busy_targets = []
     idle_ants = []
     all_ants = []
     def __init__(self):
@@ -10,28 +9,8 @@ class Army:
 
     def updateArmy(self, ants):
         self.all_ants = self.parse_ants(ants)
-        new_busy_ants = []
-        new_busy_targets = []
-
-        for ant, target in zip(self.busy_ants, self.busy_targets):
-            current_ant = self._find_ant_by_id(ant.id)
-            if current_ant is None:
-                continue  # муравей погиб
-
-            if (current_ant.q, current_ant.r) == target:
-                self.idle_ants.append(current_ant)  # цель достигнута
-            else:
-                new_busy_ants.append(current_ant)
-                new_busy_targets.append(target)
-
-        self.busy_ants = new_busy_ants
-        self.busy_targets = new_busy_targets
-
-        busy_ids = {ant.id for ant in self.busy_ants}
-        self.idle_ants = [
-            ant for ant in self.all_ants
-            if ant.id not in busy_ids
-        ]
+        self.idle_ants = self.all_ants.copy()
+        self.busy_ants = []
 
     def _find_ant_by_id(self, ant_id: str) -> Ant | None:
         for ant in self.all_ants:
@@ -63,7 +42,10 @@ class Army:
             ants.append(ant)
         return ants
 
-    def add_busy_ant(self):
-        pass
-    def remove_budy_ant(self):
+    def add_busy_ant(self, ant: Ant):
+        if ant in self.idle_ants:
+            self.idle_ants.remove(ant)
+        self.busy_ants.append(ant)
+
+    def remove_busyy_ant(self):
         pass

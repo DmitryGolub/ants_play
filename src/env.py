@@ -5,4 +5,3 @@ HEADERS = {
         'accept': 'application/json',
         'X-Auth-Token': TOKEN
     }
-

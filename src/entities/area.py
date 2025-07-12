@@ -72,7 +72,8 @@ class Area:
         for ant in response.get('ants', []):
             coord = (ant['q'], ant['r'])
             f = ant['food']
-            food_obj = Food(**f) if f and f.get("amount", 0) else None
+            food_obj = Food(q=ant['q'], r=ant['r'], type=f.get('type'), amount=f.get('amount')) if f and f.get("amount",
+                                                                                                               0) else None
             ant_obj = Ant(
                 q=ant['q'],
                 r=ant['r'],

@@ -70,7 +70,7 @@ class AntMover:
                     heapq.heappush(frontier, (priority, neighbor))
                     came_from[neighbor] = current
 
-        # Восстанавливаем путь (если он существует)
+
         path = []
         current = goal
         while current != start:
