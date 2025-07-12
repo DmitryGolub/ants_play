@@ -1,38 +1,6 @@
 from typing import Optional
-
-from dataclasses import dataclass
-from src.lib import getter, sender
-
-
-@dataclass
-class Food:
-    q: int
-    r: int
-    type: int
-    amount: int
-
-
-@dataclass
-class Ant:
-    q: int
-    r: int
-    type: int
-    health: int
-    id: str
-    food: Food | None = None
-
-
-@dataclass
-class Point:
-    q: int
-    r: int
-    cell_type: int  # тип клетки (1-муравейник, 2-пустой, 3-грязь, 4-кислота, 5-камень)
-    cost: int  # стоимость хода по клетки
-    friend: Ant | None = None  # если есть друг-муравей, если нет то None
-    enemy: Ant | None = None  # если есть враг-муравей, если нет то None
-    food: Food | None = None  # еда если есть
-    is_spot: bool = False  # является ли клетка спотом
-    is_home: bool = False  # является ли клекта домом
+from src.entities.entities import Point, Food, Ant
+from src.lib import write_json
 
 
 class Area:
@@ -44,7 +12,7 @@ class Area:
         """Получить точку по координатам"""
         return self.coord_to_point.get((q, r))
 
-    def getVegetables(self) -> list[Point]:
+    def getFood(self) -> list[Point]:
         """Получить все точки с едой"""
         return [p for p in self.points if p.food is not None]
 
@@ -126,8 +94,11 @@ class Area:
             if coord in self.coord_to_point:
                 self.coord_to_point[coord].enemy = ant_obj
 
+        write_json(response)
+    def findNearestAnt(self): # to point
+        pass
 
-sender("register")
-data = getter("arena")
-area = Area()
-area.updateArea(data)
+    def scanBase(self) -> bool: # 10 point
+        pass
+
+    # remember last points, unavailable now.
