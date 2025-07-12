@@ -13,4 +13,29 @@ class Strategy:
 
     def generate_actions(self):
         print('generationg actions:')
+        a = self._generate_def_actions()
+        b = self._generate_food_actions()
+        c = self._generate_attack_actions()
+        d = self._generate_idle_actions()
+        return a + b + c + d
+    
+    def _generate_def_actions(self):
         return []
+    def _generate_food_actions(self):
+        return []
+    def _generate_attack_actions(self):
+        return []
+    def _generate_idle_actions(self):
+        return []
+
+    def nearest_food_ant(self):
+        pass
+
+    def send_ant(self):
+        pass
+
+    def def_orechnik(self):
+        pass
+
+    def check_def(self):
+        pass
