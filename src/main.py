@@ -10,16 +10,26 @@ def try_register_until_success():
     print("Пробуем зарегистрироваться на раунд...")
     while True:
         ans = sender("register")
+        if not isinstance(ans, dict):
+            time.sleep(5)
+            continue
+
         if "lobbyEndsIn" in ans:
             if ans['lobbyEndsIn'] < 0:
                 print('Раунд уже идёт')
                 return False
             else:
-                print(f"Успешная регистрация! До начала раунда: {ans['lobbyEndsIn']} секунд")
                 return ans
-        else:
-            print("Регистрация пока не открыта. Повтор через 5 секунд...")
+
+        # Обработка ошибки от сервера (например, нет активной игры)
+        if "error" in ans:
             time.sleep(5)
+            continue
+
+        # Если никакое условие не подошло
+        print("Регистрация пока не открыта. Повтор через 5 секунд...")
+        time.sleep(5)
+
 
 def wait_for_round_start(lobbyEndsIn: int):
     print(f"Ожидание начала раунда ({lobbyEndsIn} сек)...")
@@ -50,9 +60,7 @@ def play_round():
         actions = strategy.generate_actions()
 
         if actions:
-            print(actions)
             result = sender("move", actions)
-            print('result', result)
         else:
             print("Код писал даун")
 

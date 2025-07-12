@@ -1,3 +1,5 @@
+from plotly.graph_objs.indicator import Number
+
 from src.entities.area import Area
 from src.entities.ant import AntMover
 from src.entities.army import Army
@@ -28,13 +30,15 @@ class Strategy:
     def _generate_random_actions(self):
         result = []
         for ant in self.army.all_ants:
-            if ant.food:
+            if ant.food.amount >= 5:
+                print('create path')
                 path = AntMover.createPath(self.area.getPoint(ant.q, ant.r), self.area.getSpot(), self.area.coord_to_point)
                 result.append({
                     "ant": ant.id,
                     "path": [{"q": step[0], "r": step[1]} for step in path]
                 })
             else:
+                print('go random')
                 start_point = self.area.coord_to_point.get((ant.q, ant.r))
                 if not start_point:
                     continue

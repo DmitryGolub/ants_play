@@ -91,7 +91,7 @@ class AntMover:
         return path[:max_steps]
 
     @staticmethod
-    def createRandomPath(start_point: Point, game_map: dict[Tuple[int, int], Point], length: int = 4) -> List[
+    def createRandomPath(start_point: Point, game_map: dict[Tuple[int, int], Point], length: int = 4, avoid_point: Point | None = None) -> List[
         Tuple[int, int]]:
         path = [(start_point.q, start_point.r)]
         current = path[0]
@@ -103,7 +103,13 @@ class AntMover:
             if not neighbors:
                 break
 
-            next_step = random.choice(neighbors)
+            if avoid_point:
+                # Сортируем соседей по убыванию расстояния от avoid_point
+                neighbors.sort(
+                    key=lambda n: -((n[0] - avoid_point.q) ** 2 + (n[1] - avoid_point.r) ** 2)
+                )
+
+            next_step = random.choice(neighbors[:2]) if len(neighbors) > 1 else neighbors[0]
             path.append(next_step)
             current = next_step
 

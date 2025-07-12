@@ -89,7 +89,8 @@ class Area:
         for enemy in response.get('enemies', []):
             coord = (enemy['q'], enemy['r'])
             f = enemy.get('food', None)
-            food_obj = Food(**f) if f and f.get("amount", 0) else None
+            food_obj = Food(q=enemy['q'], r=enemy['r'], type=f.get('type'), amount=f.get('amount')) if f and f.get("amount",
+                                                                                                               0) else None
             ant_obj = Ant(
                 q=enemy['q'],
                 r=enemy['r'],
